@@ -2,12 +2,13 @@ package com.mindfire.ems.service;
 
 import java.util.List;
 
+import com.mindfire.ems.dto.DepartmentRequestDto;
 import com.mindfire.ems.model.Department;
 
 public interface DepartmentService {
-    Department addDepartment(Department department);
+    Department addDepartment(DepartmentRequestDto dto);
 
-    Department updateDepartment(int id, Department department);
+    Department updateDepartment(int id, DepartmentRequestDto dto);
 
     void deleteDepartment(int id);
 
