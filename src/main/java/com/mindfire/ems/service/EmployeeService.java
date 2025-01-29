@@ -22,7 +22,7 @@ public interface EmployeeService {
 
     List<EmployeeResponseDto> earningMorethanThirdHighestSalary();
 
-    void bulkSalaryUpdate();
+    void bulkSalaryUpdate(double percentage);
 
     List<EmployeeResponseDto> getEmployeeInBatchSortBySalaryInDesc(int pageNumber);
 }

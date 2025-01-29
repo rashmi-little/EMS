@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomRepository {
-    void bulkSalaryUpdate();
+    void bulkSalaryUpdate(double percentage);
 }
