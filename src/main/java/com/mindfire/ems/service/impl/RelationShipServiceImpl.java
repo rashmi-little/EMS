@@ -1,12 +1,14 @@
 package com.mindfire.ems.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mindfire.ems.dto.DepartmentResponseDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
+import com.mindfire.ems.dto.EmployeeWithDepartmentDto;
 import com.mindfire.ems.model.Department;
 import com.mindfire.ems.model.Employee;
 import com.mindfire.ems.repository.DepartmentRepository;
@@ -93,13 +95,13 @@ public class RelationShipServiceImpl implements RelationShipService {
 
         List<Employee> existingListFromDepartment = fromDepartment.getEmployees();
 
-        if(!existingListFromDepartment.contains(employee)) {
+        if (!existingListFromDepartment.contains(employee)) {
             throw new RuntimeException("Employee not present in the department from which we need to transfer");
         }
 
         List<Employee> existingListToDepartment = toDepartment.getEmployees();
 
-        if(existingListToDepartment.contains(employee)) {
+        if (existingListToDepartment.contains(employee)) {
             throw new RuntimeException("Employee already present in the department to which we need to transfer");
         }
 
@@ -111,6 +113,31 @@ public class RelationShipServiceImpl implements RelationShipService {
 
         departmentRepository.save(fromDepartment);
         departmentRepository.save(toDepartment);
+    }
+
+    @Override
+    public EmployeeWithDepartmentDto getAllEmployeeWithDepartments(int empId) {
+        Employee employee = employeeRepository.findById(empId)
+                .orElseThrow(() -> new RuntimeException("Employee does not exist"));
+
+        EmployeeResponseDto employeeDto = EmployeeResponseMapper.convertEmployeeResponseDto(employee);
+
+        List<DepartmentResponseDto> departmentDtos = employee.getDepartments().stream()
+                .map(DepartmentResponseMapper::convertDepartmentResponseDto).toList();
+
+        EmployeeWithDepartmentDto response = new EmployeeWithDepartmentDto(employeeDto, departmentDtos);
+
+        return response;
+    }
+
+    @Override
+    public List<EmployeeWithDepartmentDto> getAllEmployeesWithDepartments() {
+        List<Employee> employees = employeeRepository.findAll();
+
+        List<EmployeeWithDepartmentDto> resultList = employees.stream()
+                .map(emp -> getAllEmployeeWithDepartments(emp.getId())).collect(Collectors.toList());
+
+        return resultList;
     }
 
 }

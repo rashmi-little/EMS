@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mindfire.ems.dto.DepartmentResponseDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
+import com.mindfire.ems.dto.EmployeeWithDepartmentDto;
 import com.mindfire.ems.service.RelationShipService;
 
 import lombok.RequiredArgsConstructor;
@@ -68,5 +69,12 @@ public class RelationShipController {
         relationShipService.transfer(empId, fromDeptId, toDeptId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/relationship/employees")
+    public ResponseEntity<List<EmployeeWithDepartmentDto>> getEmployees() {
+        List<EmployeeWithDepartmentDto> response = relationShipService.getAllEmployeesWithDepartments();
+
+        return ResponseEntity.ok(response);
     }
 }

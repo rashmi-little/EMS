@@ -57,4 +57,25 @@ public class EmployeeController {
         var updatedEmployee = employeeService.updateEmployeeSalary(id, amount);
         return ResponseEntity.ok(updatedEmployee);
     }
+
+    @GetMapping("/employee/salary-greater-than/{amount}")
+    public ResponseEntity<List<EmployeeResponseDto>> getEmployeesSalaryGreaterThan(@PathVariable double amount) {
+        List<EmployeeResponseDto> employees = employeeService.getEmployeeWithSalaryGreaterThan(amount);
+
+        return ResponseEntity.ok(employees);
+    }
+
+    @GetMapping("/employee/joined-in-last-six-months")
+    public ResponseEntity<List<EmployeeResponseDto>> joinedInPastSixMonths() {
+        List<EmployeeResponseDto> employees = employeeService.getAllEmployeeJoinedInlastSixMonth();
+
+        return ResponseEntity.ok(employees);
+    }
+
+    @GetMapping("/employee/high-paying")
+    public ResponseEntity<List<EmployeeResponseDto>> highPayingEmployee() {
+        List<EmployeeResponseDto> response = employeeService.earningMorethanThirdHighestSalary();
+
+        return ResponseEntity.ok(response);
+    }
 }

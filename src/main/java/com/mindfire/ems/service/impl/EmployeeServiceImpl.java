@@ -1,5 +1,6 @@
 package com.mindfire.ems.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -59,5 +60,28 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 
         return EmployeeResponseMapper.convertEmployeeResponseDto(employee);
+    }
+
+    @Override
+    public List<EmployeeResponseDto> getEmployeeWithSalaryGreaterThan(double amount) {
+        List<Employee> employees = employeeRepository.findBySalaryGreaterThan(amount);
+
+        return employees.stream().map(EmployeeResponseMapper::convertEmployeeResponseDto).toList();
+    }
+
+    @Override
+    public List<EmployeeResponseDto> getAllEmployeeJoinedInlastSixMonth() {
+        LocalDate today = LocalDate.now();
+
+        List<Employee> employees = employeeRepository.findByDateOfJoiningAfter(today.minusMonths(6));
+
+        return employees.stream().map(EmployeeResponseMapper::convertEmployeeResponseDto).toList();
+    }
+
+    @Override
+    public List<EmployeeResponseDto> earningMorethanThirdHighestSalary() {
+        List<Employee> employees = employeeRepository.earningMoreThanThirdHighest();
+
+        return employees.stream().map(EmployeeResponseMapper::convertEmployeeResponseDto).toList();
     }
 }
