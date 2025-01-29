@@ -10,6 +10,7 @@ import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.model.Employee;
 import com.mindfire.ems.repository.EmployeeRepository;
 import com.mindfire.ems.service.EmployeeService;
+import com.mindfire.ems.utility.EmployeeResponseMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +25,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee();
         BeanUtils.copyProperties(dto, employee);
 
-        EmployeeResponseDto response = convertEmployeeResponseDto(employeeRepository.save(employee));
+        EmployeeResponseDto response = EmployeeResponseMapper
+                .convertEmployeeResponseDto(employeeRepository.save(employee));
 
         return response;
     }
@@ -35,7 +37,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employee.setSalary(updatedSalary);
 
-        EmployeeResponseDto response = convertEmployeeResponseDto(employeeRepository.save(employee));
+        EmployeeResponseDto response = EmployeeResponseMapper
+                .convertEmployeeResponseDto(employeeRepository.save(employee));
 
         return response;
     }
@@ -47,7 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeResponseDto> getEmployees() {
-        return employeeRepository.findAll().stream().map(this::convertEmployeeResponseDto).toList();
+        return employeeRepository.findAll().stream().map(EmployeeResponseMapper::convertEmployeeResponseDto).toList();
     }
 
     @Override
@@ -55,17 +58,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 
-        EmployeeResponseDto dto = convertEmployeeResponseDto(employee);
-        
-        return dto;
+        return EmployeeResponseMapper.convertEmployeeResponseDto(employee);
     }
-
-    private EmployeeResponseDto convertEmployeeResponseDto(Employee employee) {
-
-        EmployeeResponseDto dto = new EmployeeResponseDto(employee.getId(), employee.getName(), employee.getEmail(),
-                employee.getSalary(), employee.getDateOfJoining());
-
-        return dto;
-    }
-
 }
