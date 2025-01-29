@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mindfire.ems.Exception.ResourceNotFoundException;
 import com.mindfire.ems.dto.DepartmentResponseDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.dto.EmployeeWithDepartmentDto;
@@ -29,9 +30,9 @@ public class RelationShipServiceImpl implements RelationShipService {
     @Override
     public boolean addEmployeeToDepartment(int empId, int deptId) {
         Department department = departmentRepository.findById(deptId)
-                .orElseThrow(() -> new RuntimeException("Department does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Department does not exists"));
         Employee employee = employeeRepository.findById(empId)
-                .orElseThrow(() -> new RuntimeException("Employee does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
 
         if (department.getEmployees().contains(employee)) {
             return false;
@@ -47,7 +48,7 @@ public class RelationShipServiceImpl implements RelationShipService {
     @Override
     public List<EmployeeResponseDto> getAllEmployee(int deptId) {
         Department department = departmentRepository.findById(deptId)
-                .orElseThrow(() -> new RuntimeException("Department does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Department does not exists"));
 
         return department.getEmployees().stream().map(EmployeeResponseMapper::convertEmployeeResponseDto).toList();
     }
@@ -55,7 +56,7 @@ public class RelationShipServiceImpl implements RelationShipService {
     @Override
     public List<DepartmentResponseDto> getAllAssociatedDepartments(int empId) {
         Employee employee = employeeRepository.findById(empId)
-                .orElseThrow(() -> new RuntimeException("employee does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
 
         return employee.getDepartments().stream().map(DepartmentResponseMapper::convertDepartmentResponseDto).toList();
     }
@@ -63,9 +64,9 @@ public class RelationShipServiceImpl implements RelationShipService {
     @Override
     public boolean removeEmployeeFromDepartment(int empId, int deptId) {
         Department department = departmentRepository.findById(deptId)
-                .orElseThrow(() -> new RuntimeException("Department does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
         Employee employee = employeeRepository.findById(empId)
-                .orElseThrow(() -> new RuntimeException("Employee does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
 
         List<Employee> employees = department.getEmployees();
 
@@ -85,13 +86,13 @@ public class RelationShipServiceImpl implements RelationShipService {
     @Transactional
     public void transfer(int empId, int fromDeptId, int toDeptId) {
         Employee employee = employeeRepository.findById(empId)
-                .orElseThrow(() -> new RuntimeException("Employee does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
 
         Department fromDepartment = departmentRepository.findById(fromDeptId)
-                .orElseThrow(() -> new RuntimeException("from Department id does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("From department id does not exists"));
 
         Department toDepartment = departmentRepository.findById(toDeptId)
-                .orElseThrow(() -> new RuntimeException("to Department id does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("To department id does not exists"));
 
         List<Employee> existingListFromDepartment = fromDepartment.getEmployees();
 
@@ -118,7 +119,7 @@ public class RelationShipServiceImpl implements RelationShipService {
     @Override
     public EmployeeWithDepartmentDto getAllEmployeeWithDepartments(int empId) {
         Employee employee = employeeRepository.findById(empId)
-                .orElseThrow(() -> new RuntimeException("Employee does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
 
         EmployeeResponseDto employeeDto = EmployeeResponseMapper.convertEmployeeResponseDto(employee);
 
