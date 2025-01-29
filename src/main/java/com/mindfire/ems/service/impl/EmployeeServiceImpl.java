@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.mindfire.ems.Exception.ResourceNotFoundException;
 import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.model.Employee;
@@ -40,7 +41,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponseDto updateEmployeeSalary(int id, double updatedSalary) {
-        Employee employee = employeeRepository.findById(id).orElseThrow();
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
 
         employee.setSalary(updatedSalary);
 
@@ -63,7 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponseDto getEmployee(int id) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
 
         return EmployeeResponseMapper.convertEmployeeResponseDto(employee);
     }

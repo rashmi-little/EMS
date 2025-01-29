@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.mindfire.ems.Exception.ResourceNotFoundException;
 import com.mindfire.ems.dto.DepartmentRequestDto;
 import com.mindfire.ems.dto.DepartmentResponseDto;
 import com.mindfire.ems.model.Department;
@@ -25,19 +26,22 @@ public class DepartmentServiceImpl implements DepartmentService {
         Department department = new Department();
         BeanUtils.copyProperties(dto, department);
 
-        DepartmentResponseDto response = DepartmentResponseMapper.convertDepartmentResponseDto(departmentRepository.save(department));
+        DepartmentResponseDto response = DepartmentResponseMapper
+                .convertDepartmentResponseDto(departmentRepository.save(department));
 
         return response;
     }
 
     @Override
     public DepartmentResponseDto updateDepartment(int id, DepartmentRequestDto dto) {
-        Department oldDepartment = departmentRepository.findById(id).orElseThrow();
-        
+        Department oldDepartment = departmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Department does not exists"));
+
         oldDepartment.setLocation(dto.location());
         oldDepartment.setName(dto.name());
 
-        DepartmentResponseDto response = DepartmentResponseMapper.convertDepartmentResponseDto(departmentRepository.save(oldDepartment));
+        DepartmentResponseDto response = DepartmentResponseMapper
+                .convertDepartmentResponseDto(departmentRepository.save(oldDepartment));
         return response;
     }
 
@@ -48,13 +52,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentResponseDto> getDepartments() {
-        return departmentRepository.findAll().stream().map(DepartmentResponseMapper::convertDepartmentResponseDto).toList();
+        return departmentRepository.findAll().stream().map(DepartmentResponseMapper::convertDepartmentResponseDto)
+                .toList();
     }
 
     @Override
     public DepartmentResponseDto getDepartment(int id) {
         Department department = departmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("department not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Department does not exists"));
         DepartmentResponseDto response = DepartmentResponseMapper.convertDepartmentResponseDto(department);
 
         return response;
