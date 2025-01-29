@@ -23,4 +23,6 @@ public interface EmployeeService {
     List<EmployeeResponseDto> earningMorethanThirdHighestSalary();
 
     void bulkSalaryUpdate();
+
+    List<EmployeeResponseDto> getEmployeeInBatchSortBySalaryInDesc(int pageNumber);
 }

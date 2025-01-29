@@ -1,15 +1,12 @@
 package com.mindfire.ems.repository.impl;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.model.Employee;
 import com.mindfire.ems.repository.CustomRepository;
-import com.mindfire.ems.utility.EmployeeResponseMapper;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
