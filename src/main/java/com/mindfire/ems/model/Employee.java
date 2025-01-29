@@ -1,6 +1,7 @@
 package com.mindfire.ems.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -39,4 +40,12 @@ public class Employee {
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
     @JoinTable(name = "employee_department", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "department_id"))
     private List<Department> departments;
+
+    public void addDepartment(Department department) {
+        if(departments == null) {
+            departments = new ArrayList<Department>();
+        }
+
+        departments.add(department);
+    }
 }
