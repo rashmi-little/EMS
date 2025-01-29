@@ -2,16 +2,17 @@ package com.mindfire.ems.service;
 
 import java.util.List;
 
-import com.mindfire.ems.model.Employee;
+import com.mindfire.ems.dto.EmployeeRequestDto;
+import com.mindfire.ems.dto.EmployeeResponseDto;
 
 public interface EmployeeService {
-    Employee addEmployee(Employee employee);
+    EmployeeResponseDto addEmployee(EmployeeRequestDto dto);
 
-    Employee updateEmployeeSalary(int id, double updatedSalary);
+    EmployeeResponseDto updateEmployeeSalary(int id, double updatedSalary);
 
     void deleteEmployee(int id);
 
-    List<Employee> getEmployees();
+    List<EmployeeResponseDto> getEmployees();
 
-    Employee getEmployee(int id);
+    EmployeeResponseDto getEmployee(int id);
 }

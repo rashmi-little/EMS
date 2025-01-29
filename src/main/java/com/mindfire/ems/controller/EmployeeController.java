@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mindfire.ems.dto.EmployeeRequestDto;
+import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.model.Employee;
 import com.mindfire.ems.service.EmployeeService;
 
@@ -25,21 +27,21 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PostMapping("/employee")
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        Employee savedEmployee = employeeService.addEmployee(employee);
+    public ResponseEntity<EmployeeResponseDto> createEmployee(@RequestBody EmployeeRequestDto dto) {
+        var savedEmployee = employeeService.addEmployee(dto);
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
     @GetMapping("/employee")
-    public ResponseEntity<List<Employee>> getAll() {
-        List<Employee> employees = employeeService.getEmployees();
+    public ResponseEntity<List<EmployeeResponseDto>> getAll() {
+        var employees = employeeService.getEmployees();
 
         return ResponseEntity.ok(employees);
     }
 
     @GetMapping("/employee/{id}")
-    public ResponseEntity<Employee> getAll(@PathVariable int id) {
-        Employee employee = employeeService.getEmployee(id);
+    public ResponseEntity<EmployeeResponseDto> getAll(@PathVariable int id) {
+        var employee = employeeService.getEmployee(id);
 
         return ResponseEntity.ok(employee);
     }
@@ -51,8 +53,8 @@ public class EmployeeController {
     }
 
     @PatchMapping("/employee/{id}/salary/{amount}")
-    public ResponseEntity<Employee> updateEmployeeSalary(@PathVariable int id, @PathVariable double amount) {
-        Employee updatedEmployee = employeeService.updateEmployeeSalary(id, amount);
+    public ResponseEntity<EmployeeResponseDto> updateEmployeeSalary(@PathVariable int id, @PathVariable double amount) {
+        var updatedEmployee = employeeService.updateEmployeeSalary(id, amount);
         return ResponseEntity.ok(updatedEmployee);
     }
 }
