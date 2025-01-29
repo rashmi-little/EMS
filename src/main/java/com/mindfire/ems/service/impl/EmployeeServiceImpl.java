@@ -94,8 +94,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void bulkSalaryUpdate() {
-        customRepository.bulkSalaryUpdate();
+    public void bulkSalaryUpdate(double percentage) {
+        customRepository.bulkSalaryUpdate(percentage);
     }
 
     @Override

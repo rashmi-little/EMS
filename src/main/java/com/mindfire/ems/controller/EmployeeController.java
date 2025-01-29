@@ -82,9 +82,9 @@ public class EmployeeController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/employee/bonus")
-    public ResponseEntity<Void> bulkSalaryUpdate() {
-        employeeService.bulkSalaryUpdate();
+    @PutMapping("/employee/bonus/{incrementPercentage}")
+    public ResponseEntity<Void> bulkSalaryUpdate(@PathVariable double incrementPercentage) {
+        employeeService.bulkSalaryUpdate(incrementPercentage);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

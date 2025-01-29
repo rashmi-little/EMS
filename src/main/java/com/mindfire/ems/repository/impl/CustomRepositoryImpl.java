@@ -20,13 +20,16 @@ public class CustomRepositoryImpl implements CustomRepository {
 
     @Override
     @Transactional
-    public void bulkSalaryUpdate() {
+    public void bulkSalaryUpdate(double percentage) {
+        if(percentage <= 0) {
+            throw new RuntimeException("Invalid increment percentage value");
+        }
         TypedQuery<Employee> query = entityManager.createQuery("from Employee", Employee.class);
 
         List<Employee> employees = query.getResultList();
 
         List<Employee> newList = employees.stream().map(emp -> {
-            emp.setSalary(Math.round(emp.getSalary() + emp.getSalary() * 0.1));
+            emp.setSalary(Math.round(emp.getSalary() + emp.getSalary() * (percentage / 100)));
             return emp;
         }).toList();
 
