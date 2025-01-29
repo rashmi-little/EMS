@@ -21,4 +21,6 @@ public interface EmployeeService {
     List<EmployeeResponseDto> getAllEmployeeJoinedInlastSixMonth();
 
     List<EmployeeResponseDto> earningMorethanThirdHighestSalary();
+
+    void bulkSalaryUpdate();
 }

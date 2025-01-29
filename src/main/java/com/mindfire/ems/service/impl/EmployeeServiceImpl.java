@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.model.Employee;
+import com.mindfire.ems.repository.CustomRepository;
 import com.mindfire.ems.repository.EmployeeRepository;
 import com.mindfire.ems.service.EmployeeService;
 import com.mindfire.ems.utility.EmployeeResponseMapper;
@@ -20,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+
+    private final CustomRepository customRepository;
 
     @Override
     public EmployeeResponseDto addEmployee(EmployeeRequestDto dto) {
@@ -83,5 +86,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> employees = employeeRepository.earningMoreThanThirdHighest();
 
         return employees.stream().map(EmployeeResponseMapper::convertEmployeeResponseDto).toList();
+    }
+
+    @Override
+    public void bulkSalaryUpdate() {
+        customRepository.bulkSalaryUpdate();
     }
 }
