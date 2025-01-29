@@ -15,4 +15,6 @@ public interface DepartmentService {
     List<DepartmentResponseDto> getDepartments();
 
     DepartmentResponseDto getDepartment(int id);
+
+    List<Object[]> employeePerDepartment();
 }

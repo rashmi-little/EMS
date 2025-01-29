@@ -1,6 +1,7 @@
 package com.mindfire.ems.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mindfire.ems.dto.DepartmentRequestDto;
 import com.mindfire.ems.dto.DepartmentResponseDto;
-import com.mindfire.ems.model.Department;
 import com.mindfire.ems.service.DepartmentService;
 
 import lombok.RequiredArgsConstructor;
@@ -61,6 +61,12 @@ public class DepartmentController {
         DepartmentResponseDto updatedDepartment = departmentService.updateDepartment(id, dto);
 
         return ResponseEntity.ok(updatedDepartment);
+    }
+
+    @GetMapping("/department/employee-count")
+    public ResponseEntity<List<Object[]>> countEmployeePerDepartment() {
+        List<Object[]> list = departmentService.employeePerDepartment();
+        return ResponseEntity.ok(list);
     }
 
 }

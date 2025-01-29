@@ -60,4 +60,9 @@ public class DepartmentServiceImpl implements DepartmentService {
         return response;
     }
 
+    @Override
+    public List<Object[]> employeePerDepartment() {
+        return departmentRepository.countEmployeePerDepartment();
+    }
+
 }

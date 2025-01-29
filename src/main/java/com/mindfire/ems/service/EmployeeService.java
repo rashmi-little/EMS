@@ -15,4 +15,10 @@ public interface EmployeeService {
     List<EmployeeResponseDto> getEmployees();
 
     EmployeeResponseDto getEmployee(int id);
+
+    List<EmployeeResponseDto> getEmployeeWithSalaryGreaterThan(double amount);
+
+    List<EmployeeResponseDto> getAllEmployeeJoinedInlastSixMonth();
+
+    List<EmployeeResponseDto> earningMorethanThirdHighestSalary();
 }
