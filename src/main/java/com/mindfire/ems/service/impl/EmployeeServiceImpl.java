@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mindfire.ems.dto.EmployeeRequestDto;
@@ -91,5 +94,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void bulkSalaryUpdate() {
         customRepository.bulkSalaryUpdate();
+    }
+
+    @Override
+    public List<EmployeeResponseDto> getEmployeeInBatchSortBySalaryInDesc(int pageNumber) {
+        int pageSize = 5;
+
+        Sort sort = Sort.by("salary").descending();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+        List<Employee> employees = employeeRepository.findAll(pageable).getContent();
+
+        return employees.stream().map(EmployeeResponseMapper::convertEmployeeResponseDto).toList();
     }
 }

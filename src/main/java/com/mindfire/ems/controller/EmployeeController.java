@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
-import com.mindfire.ems.model.Employee;
 import com.mindfire.ems.service.EmployeeService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +29,7 @@ public class EmployeeController {
     @PostMapping("/employee")
     public ResponseEntity<EmployeeResponseDto> createEmployee(@RequestBody EmployeeRequestDto dto) {
         var savedEmployee = employeeService.addEmployee(dto);
+
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
@@ -50,12 +50,14 @@ public class EmployeeController {
     @DeleteMapping("/employee/{id}")
     public ResponseEntity<Void> removeEmployee(@PathVariable int id) {
         employeeService.deleteEmployee(id);
+
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/employee/{id}/salary/{amount}")
     public ResponseEntity<EmployeeResponseDto> updateEmployeeSalary(@PathVariable int id, @PathVariable double amount) {
         var updatedEmployee = employeeService.updateEmployeeSalary(id, amount);
+
         return ResponseEntity.ok(updatedEmployee);
     }
 
@@ -85,5 +87,12 @@ public class EmployeeController {
         employeeService.bulkSalaryUpdate();
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/employee/batch/{pageNumber}")
+    public ResponseEntity<List<EmployeeResponseDto>> getEmployeesInBatch(@PathVariable int pageNumber) {
+        List<EmployeeResponseDto> batchOfEmployee = employeeService.getEmployeeInBatchSortBySalaryInDesc(pageNumber);
+
+        return ResponseEntity.ok(batchOfEmployee);
     }
 }
