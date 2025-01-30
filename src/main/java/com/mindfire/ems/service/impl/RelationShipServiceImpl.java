@@ -118,7 +118,7 @@ public class RelationShipServiceImpl implements RelationShipService {
     }
 
     @Override
-    public EmployeeWithDepartmentDto getAllEmployeeWithDepartments(int empId) {
+    public EmployeeWithDepartmentDto getEmployeeWithDepartments(int empId) {
         Employee employee = employeeRepository.findById(empId)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
 
@@ -137,7 +137,7 @@ public class RelationShipServiceImpl implements RelationShipService {
         List<Employee> employees = employeeRepository.findAll();
 
         List<EmployeeWithDepartmentDto> resultList = employees.stream()
-                .map(emp -> getAllEmployeeWithDepartments(emp.getId())).collect(Collectors.toList());
+                .map(emp -> getEmployeeWithDepartments(emp.getId())).collect(Collectors.toList());
 
         return resultList;
     }

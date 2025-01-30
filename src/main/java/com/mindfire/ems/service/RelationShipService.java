@@ -69,7 +69,7 @@ public interface RelationShipService {
      * @return an {@link EmployeeWithDepartmentDto} representing the employee and
      *         their associated departments
      */
-    EmployeeWithDepartmentDto getAllEmployeeWithDepartments(int empId);
+    EmployeeWithDepartmentDto getEmployeeWithDepartments(int empId);
 
     /**
      * Retrieves a list of all employees along with their associated departments.
