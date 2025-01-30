@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class RelationShipController {
+    
     private final RelationShipService relationShipService;
 
     @PostMapping("/relationship/employee/{empId}/department/{deptId}")
