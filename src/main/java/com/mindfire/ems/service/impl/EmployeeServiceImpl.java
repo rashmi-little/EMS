@@ -41,6 +41,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponseDto updateEmployeeSalary(int id, double updatedSalary) {
+        if (updatedSalary <= 0) {
+            throw new RuntimeException("Updated salary value can not be negative or zero");
+        }
+
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
 
@@ -95,6 +99,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void bulkSalaryUpdate(double percentage) {
+        if (percentage <= 0) {
+            throw new RuntimeException("increment percentage value can not be negative or zero");
+        }
+
         customRepository.bulkSalaryUpdate(percentage);
     }
 
