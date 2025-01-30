@@ -26,8 +26,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    private final CustomRepository customRepository;
-
     @Override
     public EmployeeResponseDto addEmployee(EmployeeRequestDto dto) {
         Employee employee = new Employee();
@@ -103,7 +101,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new RuntimeException("increment percentage value can not be negative or zero");
         }
 
-        customRepository.bulkSalaryUpdate(percentage);
+        employeeRepository.bulkSalaryUpdate(percentage);
     }
 
     @Override
