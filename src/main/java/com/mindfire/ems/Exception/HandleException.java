@@ -11,6 +11,17 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/**
+ * Global exception handler class for handling different types of exceptions
+ * in the application.
+ * <p>
+ * This class is annotated with {@link ControllerAdvice} to globally handle
+ * exceptions in a Spring Boot application. It provides custom responses for
+ * different exceptions such as {@link Exception},
+ * {@link ResourceNotFoundException},
+ * and validation errors.
+ * </p>
+ */
 @ControllerAdvice
 public class HandleException {
     @ExceptionHandler(Exception.class)
