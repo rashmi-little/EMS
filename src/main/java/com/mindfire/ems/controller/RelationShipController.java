@@ -65,7 +65,6 @@ public class RelationShipController {
     @PutMapping("/relationship/transfer/employee/{empId}/from/{fromDeptId}/to/{toDeptId}")
     public ResponseEntity<Void> transferEmployee(@PathVariable int empId, @PathVariable int fromDeptId,
             @PathVariable int toDeptId) {
-
         relationShipService.transfer(empId, fromDeptId, toDeptId);
 
         return ResponseEntity.noContent().build();

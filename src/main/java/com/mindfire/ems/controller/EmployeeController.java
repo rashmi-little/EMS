@@ -18,6 +18,7 @@ import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.service.EmployeeService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -27,7 +28,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PostMapping("/employee")
-    public ResponseEntity<EmployeeResponseDto> createEmployee(@RequestBody EmployeeRequestDto dto) {
+    public ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeRequestDto dto) {
         var savedEmployee = employeeService.addEmployee(dto);
 
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);

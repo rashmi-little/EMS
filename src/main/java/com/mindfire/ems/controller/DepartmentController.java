@@ -17,6 +17,7 @@ import com.mindfire.ems.dto.DepartmentRequestDto;
 import com.mindfire.ems.dto.DepartmentResponseDto;
 import com.mindfire.ems.service.DepartmentService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -27,7 +28,7 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @PostMapping("/department")
-    public ResponseEntity<DepartmentResponseDto> createDepartment(@RequestBody DepartmentRequestDto dto) {
+    public ResponseEntity<DepartmentResponseDto> createDepartment(@Valid @RequestBody DepartmentRequestDto dto) {
         DepartmentResponseDto department = departmentService.addDepartment(dto);
 
         return new ResponseEntity<DepartmentResponseDto>(department, HttpStatus.CREATED);
