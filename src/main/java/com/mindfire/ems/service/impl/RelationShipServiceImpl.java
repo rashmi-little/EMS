@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class RelationShipServiceImpl implements RelationShipService {
+    
     private final EmployeeRepository employeeRepository;
 
     private final DepartmentRepository departmentRepository;

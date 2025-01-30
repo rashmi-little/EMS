@@ -25,25 +25,26 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class EmployeeController {
+
     private final EmployeeService employeeService;
 
     @PostMapping("/employee")
     public ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeRequestDto dto) {
-        var savedEmployee = employeeService.addEmployee(dto);
+        EmployeeResponseDto savedEmployee = employeeService.addEmployee(dto);
 
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
     @GetMapping("/employee")
     public ResponseEntity<List<EmployeeResponseDto>> getAll() {
-        var employees = employeeService.getEmployees();
+        List<EmployeeResponseDto> employees = employeeService.getEmployees();
 
         return ResponseEntity.ok(employees);
     }
 
     @GetMapping("/employee/{id}")
     public ResponseEntity<EmployeeResponseDto> getAll(@PathVariable int id) {
-        var employee = employeeService.getEmployee(id);
+        EmployeeResponseDto employee = employeeService.getEmployee(id);
 
         return ResponseEntity.ok(employee);
     }
@@ -57,7 +58,7 @@ public class EmployeeController {
 
     @PatchMapping("/employee/{id}/salary/{amount}")
     public ResponseEntity<EmployeeResponseDto> updateEmployeeSalary(@PathVariable int id, @PathVariable double amount) {
-        var updatedEmployee = employeeService.updateEmployeeSalary(id, amount);
+        EmployeeResponseDto updatedEmployee = employeeService.updateEmployeeSalary(id, amount);
 
         return ResponseEntity.ok(updatedEmployee);
     }
