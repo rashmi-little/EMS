@@ -108,6 +108,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeResponseDto> getEmployeeInBatchSortBySalaryInDesc(int pageNumber) {
+        if (pageNumber < 0) {
+            throw new RuntimeException("Page number is not valid");
+        }
+
         int pageSize = 5;
 
         Sort sort = Sort.by("salary").descending();
