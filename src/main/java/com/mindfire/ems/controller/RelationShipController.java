@@ -56,11 +56,7 @@ public class RelationShipController {
     public ResponseEntity<Void> removeEmployeeFromDepartment(@PathVariable int empId, @PathVariable int deptId) {
         boolean result = relationShipService.removeEmployeeFromDepartment(empId, deptId);
 
-        if (result) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.notFound().build();
+        return result ? ResponseEntity.notFound().build() : ResponseEntity.noContent().build();
     }
 
     @PutMapping("/relationship/transfer/employees/{empId}/from/{fromDeptId}/to/{toDeptId}")
