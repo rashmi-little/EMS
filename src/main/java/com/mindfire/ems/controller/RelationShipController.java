@@ -26,7 +26,7 @@ public class RelationShipController {
     
     private final RelationShipService relationShipService;
 
-    @PostMapping("/relationship/employee/{empId}/department/{deptId}")
+    @PostMapping("/relationship/employees/{empId}/departments/{deptId}")
     public ResponseEntity<String> addEmployeeToDepartment(@PathVariable int empId, @PathVariable int deptId) {
         boolean status = relationShipService.addEmployeeToDepartment(empId, deptId);
 
@@ -52,7 +52,7 @@ public class RelationShipController {
         return ResponseEntity.ok(departments);
     }
 
-    @DeleteMapping("/relationship/employee/{empId}/department/{deptId}")
+    @DeleteMapping("/relationship/employees/{empId}/departments/{deptId}")
     public ResponseEntity<Void> removeEmployeeFromDepartment(@PathVariable int empId, @PathVariable int deptId) {
         boolean result = relationShipService.removeEmployeeFromDepartment(empId, deptId);
 
@@ -63,7 +63,7 @@ public class RelationShipController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/relationship/transfer/employee/{empId}/from/{fromDeptId}/to/{toDeptId}")
+    @PutMapping("/relationship/transfer/employees/{empId}/from/{fromDeptId}/to/{toDeptId}")
     public ResponseEntity<Void> transferEmployee(@PathVariable int empId, @PathVariable int fromDeptId,
             @PathVariable int toDeptId) {
         relationShipService.transfer(empId, fromDeptId, toDeptId);

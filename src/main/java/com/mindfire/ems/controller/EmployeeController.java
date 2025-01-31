@@ -28,70 +28,70 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @PostMapping("/employee")
+    @PostMapping("/employees")
     public ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeRequestDto dto) {
         EmployeeResponseDto savedEmployee = employeeService.addEmployee(dto);
 
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
-    @GetMapping("/employee")
+    @GetMapping("/employees")
     public ResponseEntity<List<EmployeeResponseDto>> getAll() {
         List<EmployeeResponseDto> employees = employeeService.getEmployees();
 
         return ResponseEntity.ok(employees);
     }
 
-    @GetMapping("/employee/{id}")
+    @GetMapping("/employees/{id}")
     public ResponseEntity<EmployeeResponseDto> getAll(@PathVariable int id) {
         EmployeeResponseDto employee = employeeService.getEmployee(id);
 
         return ResponseEntity.ok(employee);
     }
 
-    @DeleteMapping("/employee/{id}")
+    @DeleteMapping("/employees/{id}")
     public ResponseEntity<Void> removeEmployee(@PathVariable int id) {
         employeeService.deleteEmployee(id);
 
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/employee/{id}/salary/{amount}")
+    @PatchMapping("/employees/{id}/salary/{amount}")
     public ResponseEntity<EmployeeResponseDto> updateEmployeeSalary(@PathVariable int id, @PathVariable double amount) {
         EmployeeResponseDto updatedEmployee = employeeService.updateEmployeeSalary(id, amount);
 
         return ResponseEntity.ok(updatedEmployee);
     }
 
-    @GetMapping("/employee/salary-greater-than/{amount}")
+    @GetMapping("/employees/salary-greater-than/{amount}")
     public ResponseEntity<List<EmployeeResponseDto>> getEmployeesSalaryGreaterThan(@PathVariable double amount) {
         List<EmployeeResponseDto> employees = employeeService.getEmployeeWithSalaryGreaterThan(amount);
 
         return ResponseEntity.ok(employees);
     }
 
-    @GetMapping("/employee/joined-in-last-six-months")
+    @GetMapping("/employees/joined-in-last-six-months")
     public ResponseEntity<List<EmployeeResponseDto>> joinedInPastSixMonths() {
         List<EmployeeResponseDto> employees = employeeService.getAllEmployeeJoinedInlastSixMonth();
 
         return ResponseEntity.ok(employees);
     }
 
-    @GetMapping("/employee/high-paying")
+    @GetMapping("/employees/high-paying")
     public ResponseEntity<List<EmployeeResponseDto>> highPayingEmployee() {
         List<EmployeeResponseDto> response = employeeService.earningMorethanThirdHighestSalary();
 
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/employee/bonus/{incrementPercentage}")
+    @PutMapping("/employees/bonus/{incrementPercentage}")
     public ResponseEntity<Void> bulkSalaryUpdate(@PathVariable double incrementPercentage) {
         employeeService.bulkSalaryUpdate(incrementPercentage);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/employee/batch/{pageNumber}")
+    @GetMapping("/employees/batch/{pageNumber}")
     public ResponseEntity<List<EmployeeResponseDto>> getEmployeesInBatch(@PathVariable int pageNumber) {
         List<EmployeeResponseDto> batchOfEmployee = employeeService.getEmployeeInBatchSortBySalaryInDesc(pageNumber);
 

@@ -13,7 +13,6 @@ import com.mindfire.ems.Exception.ResourceNotFoundException;
 import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.model.Employee;
-import com.mindfire.ems.repository.CustomRepository;
 import com.mindfire.ems.repository.EmployeeRepository;
 import com.mindfire.ems.service.EmployeeService;
 import com.mindfire.ems.utility.EmployeeResponseMapper;
