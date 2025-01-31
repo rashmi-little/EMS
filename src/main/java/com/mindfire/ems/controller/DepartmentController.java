@@ -50,9 +50,9 @@ public class DepartmentController {
 
     @DeleteMapping("/departments/{id}")
     public ResponseEntity<Void> removeDepartment(@PathVariable int id) {
-        departmentService.deleteDepartment(id);
+        boolean result = departmentService.deleteDepartment(id);
 
-        return ResponseEntity.noContent().build();
+        return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @PutMapping("/departments/{id}")

@@ -51,9 +51,9 @@ public class EmployeeController {
 
     @DeleteMapping("/employees/{id}")
     public ResponseEntity<Void> removeEmployee(@PathVariable int id) {
-        employeeService.deleteEmployee(id);
-
-        return ResponseEntity.noContent().build();
+        boolean result = employeeService.deleteEmployee(id);
+        
+        return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @PatchMapping("/employees/{id}/salary/{amount}")

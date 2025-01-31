@@ -34,7 +34,7 @@ public interface DepartmentService {
      *
      * @param id the ID of the department to be deleted
      */
-    void deleteDepartment(int id);
+    boolean deleteDepartment(int id);
 
     /**
      * Retrieves a list of all departments in the system.

@@ -33,7 +33,7 @@ public interface EmployeeService {
      *
      * @param id the ID of the employee to be deleted
      */
-    void deleteEmployee(int id);
+    boolean deleteEmployee(int id);
 
     /**
      * Retrieves a list of all employees in the system.
