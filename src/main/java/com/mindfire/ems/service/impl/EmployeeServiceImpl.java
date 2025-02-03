@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mindfire.ems.Exception.ResourceNotFoundException;
+import com.mindfire.ems.constants.MessageConstants;
 import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.model.Employee;
@@ -39,11 +40,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponseDto updateEmployeeSalary(int id, double updatedSalary) {
         if (updatedSalary <= 0) {
-            throw new RuntimeException("Updated salary value can not be negative or zero");
+            throw new RuntimeException(MessageConstants.VALUE_CAN_NOT_NEGATIVE_OR_ZERO);
         }
 
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.EMPLOYEE_NOT_FOUND));
 
         employee.setSalary(updatedSalary);
 
@@ -72,7 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponseDto getEmployee(int id) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee does not exists"));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.EMPLOYEE_NOT_FOUND));
 
         return EmployeeResponseMapper.convertEmployeeResponseDto(employee);
     }
@@ -103,7 +104,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void bulkSalaryUpdate(double percentage) {
         if (percentage <= 0) {
-            throw new RuntimeException("increment percentage value can not be negative or zero");
+            throw new RuntimeException(MessageConstants.VALUE_CAN_NOT_NEGATIVE_OR_ZERO);
         }
 
         employeeRepository.bulkSalaryUpdate(percentage);
@@ -112,7 +113,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeResponseDto> getEmployeeInBatchSortBySalaryInDesc(int pageNumber) {
         if (pageNumber < 0) {
-            throw new RuntimeException("Page number is not valid");
+            throw new RuntimeException(MessageConstants.VALUE_CAN_NOT_NEGATIVE_OR_ZERO);
         }
 
         int pageSize = 5;

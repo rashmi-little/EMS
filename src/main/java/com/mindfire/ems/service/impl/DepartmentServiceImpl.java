@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.mindfire.ems.Exception.ResourceNotFoundException;
+import com.mindfire.ems.constants.MessageConstants;
 import com.mindfire.ems.dto.DepartmentRequestDto;
 import com.mindfire.ems.dto.DepartmentResponseDto;
 import com.mindfire.ems.model.Department;
@@ -35,7 +36,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentResponseDto updateDepartment(int id, DepartmentRequestDto dto) {
         Department oldDepartment = departmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Department does not exists"));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.DEPARTMENT_NOT_FOUND));
 
         oldDepartment.setLocation(dto.location());
         oldDepartment.setName(dto.name());
@@ -65,7 +66,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentResponseDto getDepartment(int id) {
         Department department = departmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Department does not exists"));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.DEPARTMENT_NOT_FOUND));
         DepartmentResponseDto response = DepartmentResponseMapper.convertDepartmentResponseDto(department);
 
         return response;
