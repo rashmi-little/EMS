@@ -18,16 +18,20 @@ import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.service.EmployeeService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
+@Tag(name = "Employee APIs", description = "Employee related operation")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
+    @Operation(summary = "Create a new employee", description = "This endpoint allows you to create a new employee in the system.")
     @PostMapping("/employees")
     public ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeRequestDto dto) {
         EmployeeResponseDto savedEmployee = employeeService.addEmployee(dto);
@@ -35,6 +39,7 @@ public class EmployeeController {
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Get all employees", description = "This endpoint fetches a list of all employees in the system.")
     @GetMapping("/employees")
     public ResponseEntity<List<EmployeeResponseDto>> getAll() {
         List<EmployeeResponseDto> employees = employeeService.getEmployees();
@@ -42,6 +47,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employees);
     }
 
+    @Operation(summary = "Get employee by ID", description = "This endpoint fetches the employee details by their unique ID.")
     @GetMapping("/employees/{id}")
     public ResponseEntity<EmployeeResponseDto> getAll(@PathVariable int id) {
         EmployeeResponseDto employee = employeeService.getEmployee(id);
@@ -49,13 +55,15 @@ public class EmployeeController {
         return ResponseEntity.ok(employee);
     }
 
+    @Operation(summary = "Remove employee by ID", description = "This endpoint removes an employee from the system based on the provided ID.")
     @DeleteMapping("/employees/{id}")
     public ResponseEntity<Void> removeEmployee(@PathVariable int id) {
         boolean result = employeeService.deleteEmployee(id);
-        
+
         return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
+    @Operation(summary = "Update employee salary", description = "This endpoint updates the salary of an employee by the provided amount.")
     @PatchMapping("/employees/{id}/salary/{amount}")
     public ResponseEntity<EmployeeResponseDto> updateEmployeeSalary(@PathVariable int id, @PathVariable double amount) {
         EmployeeResponseDto updatedEmployee = employeeService.updateEmployeeSalary(id, amount);
@@ -63,6 +71,7 @@ public class EmployeeController {
         return ResponseEntity.ok(updatedEmployee);
     }
 
+    @Operation(summary = "Get employees with salary greater than specified amount", description = "This endpoint fetches all employees whose salary is greater than the specified amount.")
     @GetMapping("/employees/salary-greater-than/{amount}")
     public ResponseEntity<List<EmployeeResponseDto>> getEmployeesSalaryGreaterThan(@PathVariable double amount) {
         List<EmployeeResponseDto> employees = employeeService.getEmployeeWithSalaryGreaterThan(amount);
@@ -70,6 +79,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employees);
     }
 
+    @Operation(summary = "Get employees who joined in the last six months", description = "This endpoint fetches employees who joined the organization in the last six months.")
     @GetMapping("/employees/joined-in-last-six-months")
     public ResponseEntity<List<EmployeeResponseDto>> joinedInPastSixMonths() {
         List<EmployeeResponseDto> employees = employeeService.getAllEmployeeJoinedInlastSixMonth();
@@ -77,6 +87,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employees);
     }
 
+    @Operation(summary = "Get high paying employees", description = "This endpoint fetches employees who are earning more than the third-highest salary.")
     @GetMapping("/employees/high-paying")
     public ResponseEntity<List<EmployeeResponseDto>> highPayingEmployee() {
         List<EmployeeResponseDto> response = employeeService.earningMorethanThirdHighestSalary();
@@ -84,6 +95,7 @@ public class EmployeeController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Bulk update employee salary", description = "This endpoint allows you to update the salary of all employees by a specified percentage increase.")
     @PutMapping("/employees/bonus/{incrementPercentage}")
     public ResponseEntity<Void> bulkSalaryUpdate(@PathVariable double incrementPercentage) {
         employeeService.bulkSalaryUpdate(incrementPercentage);
@@ -91,6 +103,7 @@ public class EmployeeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "Get employees in batch", description = "This endpoint fetches employees in a paginated manner, sorted by salary in descending order.")
     @GetMapping("/employees/batch/{pageNumber}")
     public ResponseEntity<List<EmployeeResponseDto>> getEmployeesInBatch(@PathVariable int pageNumber) {
         List<EmployeeResponseDto> batchOfEmployee = employeeService.getEmployeeInBatchSortBySalaryInDesc(pageNumber);
