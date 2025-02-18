@@ -143,4 +143,26 @@ public class RelationShipServiceImpl implements RelationShipService {
         return resultList;
     }
 
+    @Override
+    public EmployeeWithDepartmentDto addEmployeeToDepartments(int empId, List<Integer> deptIds) {
+        Employee employee = employeeRepository.findById(empId)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.EMPLOYEE_NOT_FOUND));
+
+        List<Department> updatedDepartments = deptIds.stream().map(id -> {
+            return departmentRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("From " + MessageConstants.DEPARTMENT_NOT_FOUND));
+        }).collect(Collectors.toList());
+
+        employee.setDepartments(updatedDepartments);
+
+        employeeRepository.save(employee);
+
+        EmployeeResponseDto employeeDto = EmployeeResponseMapper.convertEmployeeResponseDto(employee);
+
+        List<DepartmentResponseDto> departmentDtos = employee.getDepartments().stream()
+                .map(DepartmentResponseMapper::convertDepartmentResponseDto).toList();
+
+        return new EmployeeWithDepartmentDto(employeeDto, departmentDtos);
+    }
+
 }

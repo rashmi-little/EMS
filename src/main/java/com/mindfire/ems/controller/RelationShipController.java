@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
+@CrossOrigin
 @Tag(name = "Employee_Department APIs", description = "Operation related to both employee and department")
 public class RelationShipController {
 
@@ -81,5 +84,22 @@ public class RelationShipController {
         List<EmployeeWithDepartmentDto> response = relationShipService.getAllEmployeesWithDepartments();
 
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Get employee with their associated departments", description = "This endpoint retrieves an employee along with the departments they are associated with.")
+    @GetMapping("/relationship/employees/{empId}/departments")
+    public ResponseEntity<EmployeeWithDepartmentDto> getEmployeeWithDepartments(@PathVariable int empId) {
+        EmployeeWithDepartmentDto employeeWithDepartments = relationShipService.getEmployeeWithDepartments(empId);
+
+        return ResponseEntity.ok(employeeWithDepartments);
+    }
+
+    @Operation(summary = "add multiple departments to employee", description = "This endpoint allows you to assign multiple departments to an employee.")
+    @PutMapping("/relationship/employees/{empId}/multiple-departments")
+    public ResponseEntity<EmployeeWithDepartmentDto> addEmployeeToDepartments(@PathVariable int empId,
+            @RequestBody List<Integer> deptIds) {
+        EmployeeWithDepartmentDto employeeWithDepartmentDto = relationShipService.addEmployeeToDepartments(empId,
+                deptIds);
+        return ResponseEntity.ok(employeeWithDepartmentDto);
     }
 }

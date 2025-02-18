@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Tag(name = "Employee APIs", description = "Employee related operation")
+@CrossOrigin
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -109,5 +111,14 @@ public class EmployeeController {
         List<EmployeeResponseDto> batchOfEmployee = employeeService.getEmployeeInBatchSortBySalaryInDesc(pageNumber);
 
         return ResponseEntity.ok(batchOfEmployee);
+    }
+
+    @Operation(summary = "Update employee details", description = "This endpoint allows you to update the details of an employee, including fields such as name, position, department, etc.")
+    @PutMapping("/employees/{id}")
+    public ResponseEntity<EmployeeResponseDto> updateEmployee(@PathVariable int id,
+            @Valid @RequestBody EmployeeRequestDto dto) {
+        EmployeeResponseDto updatedEmployee = employeeService.updateEmployee(id, dto);
+
+        return updatedEmployee != null ? ResponseEntity.ok(updatedEmployee) : ResponseEntity.notFound().build();
     }
 }
