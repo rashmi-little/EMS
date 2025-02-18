@@ -27,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Tag(name = "Department APIs", description = "Department related operation")
-@CrossOrigin
 public class DepartmentController {
 
     private final DepartmentService departmentService;

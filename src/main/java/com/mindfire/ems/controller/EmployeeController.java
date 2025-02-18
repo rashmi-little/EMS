@@ -28,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Tag(name = "Employee APIs", description = "Employee related operation")
-@CrossOrigin
 public class EmployeeController {
 
     private final EmployeeService employeeService;
