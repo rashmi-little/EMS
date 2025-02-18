@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
-@CrossOrigin
 @Tag(name = "Employee_Department APIs", description = "Operation related to both employee and department")
 public class RelationShipController {
 
