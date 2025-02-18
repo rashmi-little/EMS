@@ -78,4 +78,21 @@ public interface RelationShipService {
      *         employees with their departments
      */
     List<EmployeeWithDepartmentDto> getAllEmployeesWithDepartments();
+
+    /**
+     * Adds specified departments to an employee. This method updates the
+     * employee's department associations by replacing the existing departments
+     * with the ones provided in the input list.
+     *
+     * @param empId   the ID of the employee to which the departments will be added
+     * @param deptIds a list of department IDs that will be associated with the
+     *                employee
+     * @return an {@link EmployeeWithDepartmentDto} containing the employee's
+     *         details
+     *         along with the updated list of associated departments
+     * @throws ResourceNotFoundException if the employee with the specified ID
+     *                                   or any department with the provided IDs is
+     *                                   not found
+     */
+    EmployeeWithDepartmentDto addEmployeeToDepartments(int empId, List<Integer> deptIds);
 }

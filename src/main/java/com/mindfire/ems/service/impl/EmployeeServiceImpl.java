@@ -59,7 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employeeRepository.findById(id).isEmpty()) {
             return false;
         }
-        
+
         employeeRepository.deleteById(id);
 
         return true;
@@ -125,5 +125,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> employees = employeeRepository.findAll(pageable).getContent();
 
         return employees.stream().map(EmployeeResponseMapper::convertEmployeeResponseDto).toList();
+    }
+
+    @Override
+    public EmployeeResponseDto updateEmployee(int id, EmployeeRequestDto dto) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.EMPLOYEE_NOT_FOUND));
+
+        employee.setName(dto.name());
+        employee.setEmail(dto.email());
+        employee.setSalary(dto.salary());
+        employee.setDateOfJoining(dto.dateOfJoining());
+
+        employee = employeeRepository.save(employee);
+
+        return EmployeeResponseMapper.convertEmployeeResponseDto(employee);
     }
 }

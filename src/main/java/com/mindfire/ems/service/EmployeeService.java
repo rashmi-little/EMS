@@ -94,4 +94,14 @@ public interface EmployeeService {
      *         by salary in descending order
      */
     List<EmployeeResponseDto> getEmployeeInBatchSortBySalaryInDesc(int pageNumber);
+
+    /**
+     * helps to update employee details
+     * 
+     * @param id  of the employee
+     * @param dto update employee details
+     * @return an{@link EmployeeResponseDto} representing employee with updated
+     *         field value
+     */
+    EmployeeResponseDto updateEmployee(int id, EmployeeRequestDto dto);
 }
