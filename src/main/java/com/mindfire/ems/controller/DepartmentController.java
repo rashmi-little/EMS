@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mindfire.ems.dto.DepartmentRequestDto;
 import com.mindfire.ems.dto.DepartmentResponseDto;
+import com.mindfire.ems.dto.PagingResult;
 import com.mindfire.ems.service.DepartmentService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -77,6 +77,13 @@ public class DepartmentController {
     public ResponseEntity<List<Object[]>> countEmployeePerDepartment() {
         List<Object[]> list = departmentService.employeePerDepartment();
         return ResponseEntity.ok(list);
+    }
+
+    @Operation(summary = "Get pages of departments in the batch of 5", description = "This endpoint provides the batch fetching of departments.")
+    @GetMapping("/departments/batch/{pageNumber}")
+    public ResponseEntity<PagingResult<DepartmentResponseDto>> getDepartmentsInBatch(@PathVariable int pageNumber) {
+        PagingResult<DepartmentResponseDto> departments = departmentService.getDepartmentsInBatch(pageNumber);
+        return ResponseEntity.ok(departments);
     }
 
 }

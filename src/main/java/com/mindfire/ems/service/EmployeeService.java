@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
+import com.mindfire.ems.dto.PagingResult;
 
 /**
  * Service interface for managing employee operations.
@@ -90,10 +91,10 @@ public interface EmployeeService {
      * descending order in a batch of 5.
      *
      * @param pageNumber the page number for pagination
-     * @return a list of {@link EmployeeResponseDto} representing employees, sorted
+     * @return a page of list of {@link EmployeeResponseDto} representing employees, sorted
      *         by salary in descending order
      */
-    List<EmployeeResponseDto> getEmployeeInBatchSortBySalaryInDesc(int pageNumber);
+    PagingResult<EmployeeResponseDto> getEmployeeInBatchSortBySalaryInDesc(int pageNumber);
 
     /**
      * helps to update employee details
@@ -104,4 +105,6 @@ public interface EmployeeService {
      *         field value
      */
     EmployeeResponseDto updateEmployee(int id, EmployeeRequestDto dto);
+
+    PagingResult<EmployeeResponseDto> getEmployeeInBatch(int pageNumber);
 }

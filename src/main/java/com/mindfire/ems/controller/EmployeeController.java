@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
+import com.mindfire.ems.dto.PagingResult;
 import com.mindfire.ems.service.EmployeeService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -104,12 +104,14 @@ public class EmployeeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "Get employees in batch", description = "This endpoint fetches employees in a paginated manner, sorted by salary in descending order.")
-    @GetMapping("/employees/batch/{pageNumber}")
-    public ResponseEntity<List<EmployeeResponseDto>> getEmployeesInBatch(@PathVariable int pageNumber) {
-        List<EmployeeResponseDto> batchOfEmployee = employeeService.getEmployeeInBatchSortBySalaryInDesc(pageNumber);
+    @Operation(summary = "Get page of employees in batch", description = "This endpoint fetches employees in a paginated manner, sorted by salary in descending order.")
+    @GetMapping("/employees/batch/sort/{pageNumber}")
+    public ResponseEntity<PagingResult<EmployeeResponseDto>> getEmployeesInBatchOrderBySalary(
+            @PathVariable int pageNumber) {
+        PagingResult<EmployeeResponseDto> pageEmployee = employeeService
+                .getEmployeeInBatchSortBySalaryInDesc(pageNumber);
 
-        return ResponseEntity.ok(batchOfEmployee);
+        return ResponseEntity.ok(pageEmployee);
     }
 
     @Operation(summary = "Update employee details", description = "This endpoint allows you to update the details of an employee, including fields such as name, position, department, etc.")
@@ -119,5 +121,14 @@ public class EmployeeController {
         EmployeeResponseDto updatedEmployee = employeeService.updateEmployee(id, dto);
 
         return updatedEmployee != null ? ResponseEntity.ok(updatedEmployee) : ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Get page of employees in batch", description = "This endpoint fetches employees in a paginated manner in batch of 5")
+    @GetMapping("/employees/batch/{pageNumber}")
+    public ResponseEntity<PagingResult<EmployeeResponseDto>> getEmployeesInBatch(@PathVariable int pageNumber) {
+        PagingResult<EmployeeResponseDto> pageEmployee = employeeService
+                .getEmployeeInBatchSortBySalaryInDesc(pageNumber);
+
+        return ResponseEntity.ok(pageEmployee);
     }
 }
