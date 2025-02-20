@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mindfire.ems.dto.DepartmentResponseDto;
+import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.dto.EmployeeWithDepartmentDto;
 import com.mindfire.ems.service.RelationShipService;
@@ -99,5 +101,19 @@ public class RelationShipController {
         EmployeeWithDepartmentDto employeeWithDepartmentDto = relationShipService.addEmployeeToDepartments(empId,
                 deptIds);
         return ResponseEntity.ok(employeeWithDepartmentDto);
+    }
+
+    @Operation(summary = "create employee with departments", description = "This endpoint allows you to add employee with departments")
+    @PostMapping("/relationship/employees/save-with-departments")
+    public ResponseEntity<EmployeeWithDepartmentDto> saveEmployeeWithDepartments(
+            @RequestBody EmployeeRequestDto employeeRequestDto,
+            @RequestParam List<Integer> deptIds) {
+
+        EmployeeWithDepartmentDto savedEmployee = relationShipService.saveEmployeeWithDepartments(employeeRequestDto,
+                deptIds);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(savedEmployee);
     }
 }

@@ -2,9 +2,12 @@ package com.mindfire.ems.service;
 
 import java.util.List;
 
+import com.mindfire.ems.Exception.ResourceNotFoundException;
 import com.mindfire.ems.dto.DepartmentResponseDto;
+import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.dto.EmployeeWithDepartmentDto;
+import com.mindfire.ems.model.Employee;
 
 /**
  * Service interface for managing employee-department relationships.
@@ -20,6 +23,18 @@ public interface RelationShipService {
      *         department
      */
     boolean addEmployeeToDepartment(int empId, int deptId);
+
+    /**
+     * Converts the EmployeeRequest to an Employee entity, assigns departments to
+     * the employee,
+     * and saves the employee along with the departments.
+     *
+     * @param employeeRequest, @param List<>Ids EmployeeRequest DTO containing
+     *                         employee information.
+     * @return {@link EmployeeResponseDto}
+     */
+    public EmployeeWithDepartmentDto saveEmployeeWithDepartments(EmployeeRequestDto employeeRequestDto,
+            List<Integer> deptIds);
 
     /**
      * Retrieves a list of all employees in a specific department.
