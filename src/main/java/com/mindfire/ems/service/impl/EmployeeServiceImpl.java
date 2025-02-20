@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,6 +14,7 @@ import com.mindfire.ems.Exception.ResourceNotFoundException;
 import com.mindfire.ems.constants.MessageConstants;
 import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
+import com.mindfire.ems.dto.PagingResult;
 import com.mindfire.ems.model.Employee;
 import com.mindfire.ems.repository.EmployeeRepository;
 import com.mindfire.ems.service.EmployeeService;
@@ -111,7 +113,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeResponseDto> getEmployeeInBatchSortBySalaryInDesc(int pageNumber) {
+    public PagingResult<EmployeeResponseDto> getEmployeeInBatchSortBySalaryInDesc(int pageNumber) {
         if (pageNumber < 0) {
             throw new RuntimeException(MessageConstants.VALUE_CAN_NOT_NEGATIVE_OR_ZERO);
         }
@@ -120,11 +122,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Sort sort = Sort.by("salary").descending();
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
 
-        List<Employee> employees = employeeRepository.findAll(pageable).getContent();
+        Page<Employee> pageEmployee = employeeRepository.findAll(pageable);
 
-        return employees.stream().map(EmployeeResponseMapper::convertEmployeeResponseDto).toList();
+        List<EmployeeResponseDto> employees = pageEmployee.getContent().stream()
+                .map(EmployeeResponseMapper::convertEmployeeResponseDto).toList();
+
+        PagingResult<EmployeeResponseDto> response = new PagingResult<>(employees, pageEmployee.getTotalPages(),
+                pageEmployee.getTotalElements(), pageEmployee.getSize(), pageEmployee.getNumber());
+
+        return response;
     }
 
     @Override
@@ -140,5 +148,26 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee = employeeRepository.save(employee);
 
         return EmployeeResponseMapper.convertEmployeeResponseDto(employee);
+    }
+
+    @Override
+    public PagingResult<EmployeeResponseDto> getEmployeeInBatch(int pageNumber) {
+        if (pageNumber < 0) {
+            throw new RuntimeException(MessageConstants.VALUE_CAN_NOT_NEGATIVE_OR_ZERO);
+        }
+
+        int pageSize = 5;
+
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+
+        Page<Employee> pageEmployee = employeeRepository.findAll(pageable);
+
+        List<EmployeeResponseDto> employees = pageEmployee.getContent().stream()
+                .map(EmployeeResponseMapper::convertEmployeeResponseDto).toList();
+
+        PagingResult<EmployeeResponseDto> response = new PagingResult<>(employees, pageEmployee.getTotalPages(),
+                pageEmployee.getTotalElements(), pageEmployee.getSize(), pageEmployee.getNumber());
+
+        return response;
     }
 }

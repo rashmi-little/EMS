@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mindfire.ems.dto.DepartmentRequestDto;
 import com.mindfire.ems.dto.DepartmentResponseDto;
+import com.mindfire.ems.dto.PagingResult;
 
 /**
  * Service interface for managing department operations.
@@ -62,4 +63,20 @@ public interface DepartmentService {
      *         and the corresponding employee count
      */
     List<Object[]> employeePerDepartment();
+
+    /**
+     * Retrieves a paginated list of departments.
+     * This method returns a batch of departments in the form of a PagingResult,
+     * which contains the data for the specified page number.
+     *
+     * @param pageNumber The page number to retrieve (starting from 1).
+     *                   This determines which set of departments to fetch in the
+     *                   paginated result.
+     * @return A {@link PagingResult} object containing the list of departments for
+     *         the
+     *         requested page,
+     *         including metadata like total pages, total count, and the current
+     *         page number.
+     */
+    PagingResult<DepartmentResponseDto> getDepartmentsInBatch(int pageNumber);
 }
