@@ -2,6 +2,7 @@ package com.mindfire.ems.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,9 @@ import com.mindfire.ems.constants.MessageConstants;
 import com.mindfire.ems.dto.EmployeeRequestDto;
 import com.mindfire.ems.dto.EmployeeResponseDto;
 import com.mindfire.ems.dto.PagingResult;
+import com.mindfire.ems.model.Department;
 import com.mindfire.ems.model.Employee;
+import com.mindfire.ems.repository.DepartmentRepository;
 import com.mindfire.ems.repository.EmployeeRepository;
 import com.mindfire.ems.service.EmployeeService;
 import com.mindfire.ems.utility.EmployeeResponseMapper;
@@ -27,12 +30,16 @@ import lombok.RequiredArgsConstructor;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
 
     @Override
     public EmployeeResponseDto addEmployee(EmployeeRequestDto dto) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(dto, employee);
+        List<Department> departments = dto.deptIds().stream().map(id -> departmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(MessageConstants.DEPARTMENT_NOT_FOUND))).toList();
 
+        employee.setDepartments(departments);
         EmployeeResponseDto response = EmployeeResponseMapper
                 .convertEmployeeResponseDto(employeeRepository.save(employee));
 
@@ -136,17 +143,29 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponseDto updateEmployee(int id, EmployeeRequestDto dto) {
-        Employee employee = employeeRepository.findById(id)
+    public EmployeeResponseDto updateEmployee(int empId, EmployeeRequestDto dto) {
+        System.out.println("Employee id is" + empId);
+        Employee employee = employeeRepository.findById(empId)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.EMPLOYEE_NOT_FOUND));
 
+        System.out.println(dto);
+        System.out.println(employee);
         employee.setName(dto.name());
         employee.setEmail(dto.email());
         employee.setSalary(dto.salary());
         employee.setDateOfJoining(dto.dateOfJoining());
 
-        employee = employeeRepository.save(employee);
-
+        List<Department> departments = dto.deptIds().stream().map(id -> departmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(MessageConstants.DEPARTMENT_NOT_FOUND)))
+                .collect(Collectors.toList());
+        employee.setDepartments(null);
+        employee.setDepartments(departments);
+        try {
+            employee = employeeRepository.save(employee);
+            System.out.println(employee);
+        } catch (Exception e) {
+            throw new RuntimeException("Error saving employee: " + e);
+        }
         return EmployeeResponseMapper.convertEmployeeResponseDto(employee);
     }
 

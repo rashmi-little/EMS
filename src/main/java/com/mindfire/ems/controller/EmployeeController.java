@@ -119,7 +119,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeResponseDto> updateEmployee(@PathVariable int id,
             @Valid @RequestBody EmployeeRequestDto dto) {
         EmployeeResponseDto updatedEmployee = employeeService.updateEmployee(id, dto);
-
+        System.out.println(updatedEmployee);
         return updatedEmployee != null ? ResponseEntity.ok(updatedEmployee) : ResponseEntity.notFound().build();
     }
 
@@ -127,7 +127,7 @@ public class EmployeeController {
     @GetMapping("/employees/batch/{pageNumber}")
     public ResponseEntity<PagingResult<EmployeeResponseDto>> getEmployeesInBatch(@PathVariable int pageNumber) {
         PagingResult<EmployeeResponseDto> pageEmployee = employeeService
-                .getEmployeeInBatchSortBySalaryInDesc(pageNumber);
+                .getEmployeeInBatch(pageNumber);
 
         return ResponseEntity.ok(pageEmployee);
     }
